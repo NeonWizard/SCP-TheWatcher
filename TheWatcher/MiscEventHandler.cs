@@ -15,7 +15,7 @@ namespace TheWatcher
 		IEventHandlerWaitingForPlayers, IEventHandlerSetConfig, IEventHandlerPlayerPickupItem,
 		IEventHandlerDoorAccess, IEventHandlerElevatorUse, IEventHandlerPlayerHurt, IEventHandlerWarheadStartCountdown,
 		IEventHandlerWarheadStopCountdown, IEventHandlerCheckEscape, IEventHandlerPocketDimensionEnter,
-		IEventHandlerRoundEnd, IEventHandlerSetRole, IEventHandlerUpdate
+		IEventHandlerRoundEnd, IEventHandlerSetRole
 	{
 		private readonly TheWatcher plugin;
 
@@ -146,37 +146,34 @@ namespace TheWatcher
 			this.plugin.ActiveWatchers.Remove(ev.Player.SteamId);
 		}
 
-		public void OnUpdate(UpdateEvent ev)
-		{
-			// -- Block player from entering nuke room
-			DateTime timeOnEvent = DateTime.Now;
-			if (DateTime.Now >= timeOnEvent)
-			{
-				if (this.plugin.ActiveWatchers.Count == 0) return;
+		//public void OnUpdate(UpdateEvent ev)
+		//{
+		//	// -- Block player from entering nuke room
+		//	DateTime timeOnEvent = DateTime.Now;
+		//	if (DateTime.Now >= timeOnEvent)
+		//	{
+		//		if (this.plugin.ActiveWatchers.Count == 0) return;
 
-				timeOnEvent = DateTime.Now.AddSeconds(4.0);
-				foreach (Player p in PluginManager.Manager.Server.GetPlayers())
-				{
-					if (this.plugin.ActiveWatchers.Contains(p.SteamId))
-					{
-						foreach (var elevator in this.plugin.Server.Map.GetElevators())
-						{
-							if (elevator.ElevatorType == ElevatorType.WarheadRoom)
-							{
-								List<Vector> nukeElevator = elevator.GetPositions();
-								float bottomXPos = (nukeElevator[1].x - p.GetPosition().x) * 2;
-								float bottomZPos = (nukeElevator[1].z - p.GetPosition().z) * 2;
-								double XZdistance = Math.Sqrt(Math.Abs(bottomXPos) + Math.Abs(bottomZPos));
-								double Ydistance = Math.Abs(p.GetPosition().y) - Math.Abs(nukeElevator[1].y);
-								if (XZdistance <= 3.25 && Ydistance <= 1.25)
-								{
-									p.Teleport(new Vector(nukeElevator[0].x, nukeElevator[0].y + 1, nukeElevator[0].z));
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+		//		timeOnEvent = DateTime.Now.AddSeconds(4.0);
+		//		foreach (Player p in PluginManager.Manager.Server.GetPlayers())
+		//		{
+		//			if (this.plugin.ActiveWatchers.Contains(p.SteamId))
+		//			{
+		//				foreach (var elevator in this.plugin.Server.Map.GetElevators())
+		//				{
+		//					if (elevator.ElevatorType == ElevatorType.WarheadRoom)
+		//					{
+		//						List<Vector> nukeElevator = elevator.GetPositions();
+
+		//						if (Vector.Distance(p.GetPosition(), nukeElevator[1]) < 8)
+		//						{
+		//							p.Teleport(new Vector(nukeElevator[0].x, nukeElevator[0].y + 1, nukeElevator[0].z));
+		//						}
+		//					}
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
 	}
 }
