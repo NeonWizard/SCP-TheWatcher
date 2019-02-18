@@ -12,10 +12,10 @@ namespace TheWatcher
 		name = "TheWatcher",
 		description = "",
 		id = "xyz.wizardlywonders.TheWatcher",
-		version = "1.0.0",
+		version = "1.1.0",
 		SmodMajor = 3,
-		SmodMinor = 2,
-		SmodRevision = 2
+		SmodMinor = 3,
+		SmodRevision = 0
 	)]
 	public class TheWatcher : Plugin
     {
