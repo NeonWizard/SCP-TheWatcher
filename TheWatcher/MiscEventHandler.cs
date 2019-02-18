@@ -7,6 +7,7 @@ using System;
 using System.Threading;
 using System.Linq;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace TheWatcher
 {
@@ -51,6 +52,10 @@ namespace TheWatcher
 			// -- Block door access
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
+				GameObject player = ((GameObject)ev.Player.GetGameObject());
+				Vector3 destination = player.transform.position + player.transform.forward * 2;
+				ev.Player.Teleport(new Vector(destination.x, destination.y, destination.z));
+
 				ev.Allow = false;
 			}
 		}
