@@ -53,7 +53,7 @@ namespace TheWatcher
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
 				GameObject player = ((GameObject)ev.Player.GetGameObject());
-				Vector3 destination = player.transform.position + player.transform.forward * 2;
+				Vector3 destination = player.transform.position + player.transform.forward * 2.8f;
 				ev.Player.Teleport(new Vector(destination.x, destination.y, destination.z));
 
 				ev.Allow = false;
@@ -75,7 +75,7 @@ namespace TheWatcher
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
 				// Unavoidable damage types
-				if (ev.DamageType == DamageType.LURE || ev.DamageType == DamageType.DECONT || ev.DamageType == DamageType.WALL || ev.DamageType == DamageType.NUKE)
+				if (ev.DamageType == DamageType.LURE || ev.DamageType == DamageType.WALL || ev.DamageType == DamageType.NUKE)
 				{
 					ev.Damage = ev.Player.GetHealth() + 100;
 				}

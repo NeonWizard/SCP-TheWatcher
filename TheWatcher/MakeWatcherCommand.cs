@@ -3,6 +3,7 @@ using Smod2;
 using Smod2.API;
 using System.IO;
 using System;
+using UnityEngine;
 
 namespace TheWatcher
 {
