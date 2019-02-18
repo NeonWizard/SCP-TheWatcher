@@ -1,5 +1,6 @@
 using Smod2;
 using Smod2.API;
+using ServerMod2.API;
 using Smod2.Events;
 using Smod2.EventHandlers;
 using System.Collections.Generic;
@@ -49,13 +50,14 @@ namespace TheWatcher
 
 		public void OnDoorAccess(PlayerDoorAccessEvent ev)
 		{
-			// -- Block door access
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
+				// -- Teleport through door
 				GameObject player = ((GameObject)ev.Player.GetGameObject());
 				Vector3 destination = player.transform.position + player.transform.forward * 2.8f;
 				ev.Player.Teleport(new Vector(destination.x, destination.y, destination.z));
 
+				// -- Block door access
 				ev.Allow = false;
 			}
 		}
@@ -63,9 +65,34 @@ namespace TheWatcher
 		public void OnElevatorUse(PlayerElevatorUseEvent ev)
 		{
 			// -- Block elevator access
+			ev.AllowUse = false;
+
+			// -- Teleport to other elevator
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
-				ev.AllowUse = false;
+				Vector3 pos = new Vector3(ev.Player.GetPosition().x, ev.Player.GetPosition().y, ev.Player.GetPosition().z);
+				// -- Search through base game lifts for the one being used
+				foreach (Lift lift in UnityEngine.Object.FindObjectsOfType<Lift>())
+				{
+					SmodElevator smodElevator = new SmodElevator(lift);
+
+					if (smodElevator.ElevatorType == ev.Elevator.ElevatorType)
+					{
+						// -- Once found, find an exit point away from the player and teleport him
+						foreach (Lift.Elevator e in lift.elevators)
+						{
+							if (Vector3.Distance(e.target.transform.position, pos) > 50)
+							{
+								Vector3 destination = e.target.transform.position + Quaternion.Euler(0, 90, 0) * e.target.transform.forward * 5.5f;
+								ev.Player.Teleport(new Vector(destination.x, destination.y, destination.z));
+
+								return;
+							}
+						}
+
+						return;
+					}
+				}
 			}
 		}
 

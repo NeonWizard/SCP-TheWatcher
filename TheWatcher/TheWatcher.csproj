@@ -34,6 +34,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\Dev Server\scp_server\SCPSL_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Smod2">
       <HintPath>..\..\..\Dev Server\scp_server\SCPSL_Data\Managed\Smod2.dll</HintPath>
     </Reference>
@@ -52,6 +55,9 @@
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Dev Server\scp_server\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>..\..\..\Dev Server\scp_server\SCPSL_Data\Managed\UnityEngine.Networking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
