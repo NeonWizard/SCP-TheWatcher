@@ -30,7 +30,9 @@ namespace TheWatcher
 			// -- Ensure the Tutorial role can't trigger 096
 			if (ev.Key == "scp096_ignored_role")
 			{
-				((List<int>)ev.Value).Add(14);
+				List<int> value = new List<int>((int[])ev.Value);
+				value.Add(14);
+				ev.Value = value.ToArray();
 			}
 		}
 
