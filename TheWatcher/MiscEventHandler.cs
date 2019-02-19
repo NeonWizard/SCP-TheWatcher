@@ -64,12 +64,12 @@ namespace TheWatcher
 
 		public void OnElevatorUse(PlayerElevatorUseEvent ev)
 		{
-			// -- Block elevator access
-			ev.AllowUse = false;
-
 			// -- Teleport to other elevator
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
+				// -- Block elevator access
+				ev.AllowUse = false;
+
 				Vector3 pos = new Vector3(ev.Player.GetPosition().x, ev.Player.GetPosition().y, ev.Player.GetPosition().z);
 				// -- Search through base game lifts for the one being used
 				foreach (Lift lift in UnityEngine.Object.FindObjectsOfType<Lift>())
