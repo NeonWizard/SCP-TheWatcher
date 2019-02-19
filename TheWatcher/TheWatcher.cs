@@ -12,7 +12,7 @@ namespace TheWatcher
 		name = "TheWatcher",
 		description = "",
 		id = "xyz.wizardlywonders.TheWatcher",
-		version = "1.1.2",
+		version = "1.1.3",
 		SmodMajor = 3,
 		SmodMinor = 3,
 		SmodRevision = 0
