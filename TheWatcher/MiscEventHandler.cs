@@ -102,7 +102,7 @@ namespace TheWatcher
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
 				// Unavoidable damage types
-				if (ev.DamageType == DamageType.LURE || ev.DamageType == DamageType.WALL || ev.DamageType == DamageType.NUKE)
+				if (ev.DamageType == DamageType.NUKE)
 				{
 					ev.Damage = ev.Player.GetHealth() + 100;
 				}
