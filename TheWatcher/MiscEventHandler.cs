@@ -101,8 +101,8 @@ namespace TheWatcher
 			// -- Block (most) damage
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
-				// Unavoidable damage types
-				if (ev.DamageType == DamageType.NUKE)
+				// Until 173_ignore gets fixed, allow peanut to kill the watcher to balance things out
+				if (ev.DamageType == DamageType.SCP_173)
 				{
 					ev.Damage = ev.Player.GetHealth() + 100;
 				}
