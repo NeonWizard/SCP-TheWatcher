@@ -16,7 +16,7 @@ namespace TheWatcher
 		IEventHandlerWaitingForPlayers, IEventHandlerSetConfig, IEventHandlerPlayerPickupItem,
 		IEventHandlerDoorAccess, IEventHandlerElevatorUse, IEventHandlerPlayerHurt, IEventHandlerWarheadStartCountdown,
 		IEventHandlerWarheadStopCountdown, IEventHandlerCheckEscape, IEventHandlerPocketDimensionEnter,
-		IEventHandlerRoundEnd, IEventHandlerSetRole
+		IEventHandlerRoundEnd, IEventHandlerSetRole, IEventHandlerGeneratorEjectTablet
 	{
 		private readonly TheWatcher plugin;
 
@@ -171,6 +171,14 @@ namespace TheWatcher
 		{
 			// -- Remove from ActiveWatcher list
 			this.plugin.ActiveWatchers.Remove(ev.Player.SteamId);
+		}
+
+		public void OnGeneratorEjectTablet(PlayerGeneratorEjectTabletEvent ev)
+		{
+			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
+			{
+				ev.Allow = false;
+			}
 		}
 
 		//public void OnUpdate(UpdateEvent ev)
