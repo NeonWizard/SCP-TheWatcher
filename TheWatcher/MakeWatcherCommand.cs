@@ -49,10 +49,22 @@ namespace TheWatcher
 							}
 							else
 							{
+								// -- Set as tutorial role and spawn in d-class chambers
 								p.ChangeRole(Role.TUTORIAL, true, true, true);
+
+								// -- Give appropriate items
 								p.GiveItem(ItemType.FLASHLIGHT);
 								p.GiveItem(ItemType.COM15);
 
+								// -- Modify gun to have supressor
+								GameObject player = (GameObject)p.GetGameObject();
+								Inventory inv = player.GetComponent<Inventory>();
+								Inventory.SyncItemInfo gun = inv.items[1];
+								gun.modBarrel = 1;
+								gun.modOther = 0;
+								inv.items[1] = gun;
+
+								// -- Add to global watcher list
 								this.plugin.ActiveWatchers.Add(p.SteamId);
 
 								return new string[] { args[0] + " set as Watcher successfully." };

@@ -219,7 +219,11 @@ namespace TheWatcher
 					ev.Player.Teleport(new Vector(destination.x, destination.y, destination.z));
 				}
 
-				ev.Player.SetAmmo(AmmoType.DROPPED_9, 20);
+				Inventory inv = player.GetComponent<Inventory>();
+				int gunIndex = inv.GetItemIndex();
+				Inventory.SyncItemInfo gun = inv.GetItemInHand();
+				gun.durability = 12;
+				inv.items[gunIndex] = gun;
 			}
 		}
 
