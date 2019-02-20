@@ -13,10 +13,10 @@ using UnityEngine;
 namespace TheWatcher
 {
 	class MiscEventHandler :
-		IEventHandlerWaitingForPlayers, IEventHandlerSetConfig, IEventHandlerPlayerPickupItem,
+		IEventHandlerWaitingForPlayers, IEventHandlerSetConfig, IEventHandlerPlayerPickupItem, IEventHandlerPlayerDropItem,
 		IEventHandlerDoorAccess, IEventHandlerElevatorUse, IEventHandlerPlayerHurt, IEventHandlerWarheadStartCountdown,
 		IEventHandlerWarheadStopCountdown, IEventHandlerCheckEscape, IEventHandlerPocketDimensionEnter,
-		IEventHandlerRoundEnd, IEventHandlerSetRole, IEventHandlerGeneratorEjectTablet
+		IEventHandlerRoundEnd, IEventHandlerSetRole, IEventHandlerGeneratorEjectTablet, IEventHandlerShoot
 	{
 		private readonly TheWatcher plugin;
 
@@ -25,6 +25,8 @@ namespace TheWatcher
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
 			if (!this.plugin.GetConfigBool("watcher_enable")) this.plugin.pluginManager.DisablePlugin(plugin);
+
+			PlayerManager.localPlayer.GetComponent<CharacterClassManager>().klasy[14].runSpeed = 200f;
 		}
 
 		public void OnSetConfig(SetConfigEvent ev)
@@ -48,10 +50,20 @@ namespace TheWatcher
 			}
 		}
 
+		public void OnPlayerDropItem(PlayerDropItemEvent ev)
+		{
+			// -- Block item drop
+			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
+			{
+				ev.Allow = false;
+			}
+		}
+
 		public void OnDoorAccess(PlayerDoorAccessEvent ev)
 		{
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
+
 				// -- Teleport through door
 				GameObject player = ((GameObject)ev.Player.GetGameObject());
 				Vector3 destination = player.transform.position + player.transform.forward * 2.8f;
@@ -116,6 +128,12 @@ namespace TheWatcher
 					ev.Damage = 0;
 				}
 			}
+
+			// -- Nullify teleport gun damage
+			if (this.plugin.ActiveWatchers.Contains(ev.Attacker.SteamId))
+			{
+				ev.Damage = 0;
+			}
 		}
 
 		public void OnStartCountdown(WarheadStartEvent ev)
@@ -178,6 +196,24 @@ namespace TheWatcher
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
 				ev.Allow = false;
+			}
+		}
+
+		public void OnShoot(PlayerShootEvent ev)
+		{
+			// -- Warping pistol
+			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
+			{
+				GameObject player = (GameObject)ev.Player.GetGameObject();
+				WeaponManager playerWM = player.GetComponent<WeaponManager>();
+				Ray ray = new Ray(playerWM.camera.transform.position + playerWM.camera.transform.forward, playerWM.camera.transform.forward);
+				if (Physics.Raycast(ray, out RaycastHit raycastHit, 150f))
+				{
+					Vector3 destination = raycastHit.point + raycastHit.normal * 1f;
+					ev.Player.Teleport(new Vector(destination.x, destination.y, destination.z));
+				}
+
+				ev.Player.SetAmmo(AmmoType.DROPPED_9, 20);
 			}
 		}
 

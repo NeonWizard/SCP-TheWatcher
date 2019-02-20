@@ -51,6 +51,7 @@ namespace TheWatcher
 							{
 								p.ChangeRole(Role.TUTORIAL, true, true, true);
 								p.GiveItem(ItemType.FLASHLIGHT);
+								p.GiveItem(ItemType.COM15);
 
 								this.plugin.ActiveWatchers.Add(p.SteamId);
 
