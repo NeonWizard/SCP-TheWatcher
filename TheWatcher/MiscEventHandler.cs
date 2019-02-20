@@ -20,6 +20,8 @@ namespace TheWatcher
 	{
 		private readonly TheWatcher plugin;
 
+		private int lastElevatorEvent = 0;
+
 		public MiscEventHandler(TheWatcher plugin) => this.plugin = plugin;
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
@@ -63,7 +65,6 @@ namespace TheWatcher
 		{
 			if (this.plugin.ActiveWatchers.Contains(ev.Player.SteamId))
 			{
-
 				// -- Teleport through door
 				GameObject player = ((GameObject)ev.Player.GetGameObject());
 				Vector3 destination = player.transform.position + player.transform.forward * 2.8f;
@@ -81,6 +82,11 @@ namespace TheWatcher
 			{
 				// -- Block elevator access
 				ev.AllowUse = false;
+
+				// -- Elevator event gets called twice sometimes :^)
+				int now = Time.frameCount;
+				if (now - lastElevatorEvent < 5) return;
+				lastElevatorEvent = now;
 
 				Vector3 pos = new Vector3(ev.Player.GetPosition().x, ev.Player.GetPosition().y, ev.Player.GetPosition().z);
 				// -- Search through base game lifts for the one being used
