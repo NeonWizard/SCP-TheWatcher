@@ -64,6 +64,9 @@ namespace TheWatcher
 								gun.modOther = 0;
 								inv.items[1] = gun;
 
+								// -- Give informational personal broadcast
+								p.PersonalBroadcast(10, "You are a <color=#55ff55>Watcher</color>! You traded your ability to interact with the game in return for immortality.", false);
+
 								// -- Add to global watcher list
 								this.plugin.ActiveWatchers.Add(p.SteamId);
 
