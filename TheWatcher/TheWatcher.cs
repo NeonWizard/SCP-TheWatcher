@@ -10,7 +10,7 @@ namespace TheWatcher
 	[PluginDetails(
 		author = "Spooky",
 		name = "TheWatcher",
-		description = "",
+		description = "Trade your ability to interact with the game in return for immortality.",
 		id = "xyz.wizardlywonders.TheWatcher",
 		version = "1.2.3",
 		SmodMajor = 3,
